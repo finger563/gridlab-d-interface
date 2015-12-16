@@ -7,9 +7,13 @@
 #include "rapidxml_utils.hpp"
 
 int main(int argc, char** argv) {
-  std::string _url = "http://www.httpbin.org/get";
+  std::string _url = "http://localhost:6267";
   if (argc > 1)
-    _url = argv[1];
+    {
+      _url = "";
+      for (int i=1; i<argc; i++)
+	_url += argv[i] + std::string(" ");
+    }
   std::cout << "Connecting to: " << _url << std::endl;
   auto r = cpr::Get(cpr::Url{_url});
   if (r.status_code >= 400) {
