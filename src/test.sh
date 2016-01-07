@@ -1,9 +1,12 @@
 #!/bin/bash
 
+model=$1
+
 GLD=http://localhost:6267
 
 # start GLD child process in real-time server mode
-gridlabd -D run_realtime=1 Market_Controller_House_example.glm --server &
+#gridlabd -D run_realtime=1 Market_Controller_House_example.glm --server &
+gridlabd -D run_realtime=1 $model --server &
 
 PID=$!
 
