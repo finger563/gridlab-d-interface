@@ -1481,6 +1481,11 @@ object house:..20 {
 // their controllers) but instead want to use our own, we should
 // skip this step entirely and keep the economic data out of GLD.
 
+// In the market (which is of object type auction), they use a fixed_price
+// schedule for setting/simulating cost.  If we change it to be static
+// and set the schedule externally through the server interface, that may serve
+// our needs
+
 // House 15
 object house {
 	parent trip_meter15;
