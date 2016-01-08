@@ -1473,11 +1473,22 @@ object house:..20 {
 	};
 }
 
+// In the Market Controller House example, they
+// use a controller in the house which has an embedded market
+// in it.  The controller responds to the market by adjusting its
+// loads.  Because the pricing for the controller comes directly from
+// the market, if we don't want to use their economic modeling (i.e.
+// their controllers) but instead want to use our own, we should
+// skip this step entirely and keep the economic data out of GLD.
+
 // House 15
-object house:..20 {
+object house {
 	parent trip_meter15;
+    name house15;
 	floor_area random.normal(1750,400);
-	heating_setpoint heatingsetpoint2+random.normal(0,4);
+	heating_setpoint 60;  //heatingsetpoint2+random.normal(0,4);
+    // can't use heatingsetpoint (schedule) otherwise the schedule overwrites
+    // any value I send to it
 	cooling_setpoint random.normal (80,2);
 	object ZIPload {
 		base_power ZIP1base_power*random.normal(1,.25);
@@ -1488,11 +1499,19 @@ object house:..20 {
 		current_pf 0.6;
 		impedance_pf 0.8;
 	};
-	object waterheater {
-		location INSIDE;
-		water_demand waterdemand3*random.normal(1,.2);
-	};
+	//object waterheater {
+	//	location INSIDE;
+	//	water_demand 10; //waterdemand3*random.normal(1,.2);
+	//};
 }
+
+object waterheater {
+    name waterheater15;
+    parent house15;
+    location INSIDE;
+    water_demand 10;
+}
+
 
 object multi_recorder {
 	property trip_meter1:measured_real_power,trip_meter2:measured_real_power,trip_meter3:measured_real_power,trip_meter4:measured_real_power,trip_meter5:measured_real_power,trip_meter6:measured_real_power,trip_meter7:measured_real_power,trip_meter8:measured_real_power,trip_meter9:measured_real_power,trip_meter10:measured_real_power,trip_meter11:measured_real_power,trip_meter12:measured_real_power,trip_meter13:measured_real_power,trip_meter14:measured_real_power,trip_meter15:measured_real_power;
