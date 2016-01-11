@@ -12,6 +12,12 @@ clock {
 	timezone EST+8EDT;
 }
 
+// TODO: Make sure this is all we need
+
+// ADDED MODULES HERE:
+module market;
+module climate;
+
 module tape;
 //module generators;
 module powerflow{
@@ -1178,6 +1184,12 @@ object regulator:650630 {
 	configuration regulator_configuration:6506321;
 }
 
+// Added climate here
+object climate {
+	name "Yakima WA";
+	tmyfile "WA-Yakima.tmy2";
+}
+
 // Added auction here before the definitions of all the houses which
 // use the auction
 
@@ -1202,16 +1214,16 @@ object auction {
 }
 
 // House 1
-object house:..20 {
+object house: {
 	parent trip_meter1;
     name house1;
 	floor_area random.normal(1750,400);
 	//heating_setpoint heatingsetpoint4+random.normal(0,4);
-	//cooling_setpoint random.normal (80,2);
+	cooling_setpoint random.normal (80,2);
 	thermostat_deadband random.normal (2,.5);
     air_temperature 72;
     object controller {
-        name cool_control;			
+        name cool_control1;			
         market Market_1;
         bid_mode ON;			
         period 900;
@@ -1220,7 +1232,7 @@ object house:..20 {
         control_mode RAMP;
         target air_temperature;
         // this normally changes according to schedule, can be used to control demand
-        setpoint 72;
+        setpoint cooling_setpoint;
         demand cooling_demand;
         total total_load;
         load hvac_load;
@@ -1240,15 +1252,15 @@ object waterheater {
 }
 
 // House 2
-object house:..20 {
+object house: {
 	parent trip_meter2;
     name house2;
 	floor_area random.normal(1750,400);
 	//heating_setpoint heatingsetpoint2+random.normal(0,4);
-	//cooling_setpoint random.normal (80,2);
+	cooling_setpoint random.normal (80,2);
     air_temperature 72;
     object controller {
-        name cool_control;			
+        name cool_control2;			
         market Market_1;
         bid_mode ON;			
         period 900;
@@ -1257,7 +1269,7 @@ object house:..20 {
         control_mode RAMP;
         target air_temperature;
         // this normally changes according to schedule, can be used to control demand
-        setpoint 72;
+        setpoint cooling_setpoint;
         demand cooling_demand;
         total total_load;
         load hvac_load;
@@ -1277,15 +1289,15 @@ object waterheater {
 }
 
 // House 3
-object house:..20 {
+object house: {
 	parent trip_meter3;
     name house3;
 	floor_area random.normal(1750,400);
 	//heating_setpoint heatingsetpoint2+random.normal(0,4);
-	//cooling_setpoint random.normal (80,2);
+	cooling_setpoint random.normal (80,2);
     air_temperature 72;
     object controller {
-        name cool_control;			
+        name cool_control3;			
         market Market_1;
         bid_mode ON;			
         period 900;
@@ -1294,7 +1306,7 @@ object house:..20 {
         control_mode RAMP;
         target air_temperature;
         // this normally changes according to schedule, can be used to control demand
-        setpoint 72;
+        setpoint cooling_setpoint;
         demand cooling_demand;
         total total_load;
         load hvac_load;
@@ -1314,15 +1326,15 @@ object waterheater {
 }
 
 // House 4
-object house:..20 {
+object house: {
 	parent trip_meter4;
     name house4;
 	floor_area random.normal(1750,400);
 	//heating_setpoint heatingsetpoint5+random.normal(0,4);
-	//cooling_setpoint random.normal (80,2);
+	cooling_setpoint random.normal (80,2);
     air_temperature 72;
     object controller {
-        name cool_control;			
+        name cool_control4;			
         market Market_1;
         bid_mode ON;			
         period 900;
@@ -1331,7 +1343,7 @@ object house:..20 {
         control_mode RAMP;
         target air_temperature;
         // this normally changes according to schedule, can be used to control demand
-        setpoint 72;
+        setpoint cooling_setpoint;
         demand cooling_demand;
         total total_load;
         load hvac_load;
@@ -1351,15 +1363,15 @@ object waterheater {
 }
 
 // House 5
-object house:..20 {
+object house: {
 	parent trip_meter5;
     name house5;
 	floor_area random.normal(1750,400);
 	//heating_setpoint heatingsetpoint2+random.normal(0,4);
-	//cooling_setpoint random.normal (80,2);
+	cooling_setpoint random.normal (80,2);
     air_temperature 72;
     object controller {
-        name cool_control;			
+        name cool_control5;			
         market Market_1;
         bid_mode ON;			
         period 900;
@@ -1368,7 +1380,7 @@ object house:..20 {
         control_mode RAMP;
         target air_temperature;
         // this normally changes according to schedule, can be used to control demand
-        setpoint 72;
+        setpoint cooling_setpoint;
         demand cooling_demand;
         total total_load;
         load hvac_load;
@@ -1388,15 +1400,15 @@ object waterheater {
 }
 
 // House 6
-object house:..20 {
+object house: {
 	parent trip_meter6;
     name house6;
 	floor_area random.normal(1750,400);
 	//heating_setpoint heatingsetpoint3+random.normal(0,4);
-	//cooling_setpoint random.normal (80,2);
+	cooling_setpoint random.normal (80,2);
     air_temperature 72;
     object controller {
-        name cool_control;			
+        name cool_control6;			
         market Market_1;
         bid_mode ON;			
         period 900;
@@ -1405,7 +1417,7 @@ object house:..20 {
         control_mode RAMP;
         target air_temperature;
         // this normally changes according to schedule, can be used to control demand
-        setpoint 72;
+        setpoint cooling_setpoint;
         demand cooling_demand;
         total total_load;
         load hvac_load;
@@ -1425,15 +1437,15 @@ object waterheater {
 }
 
 // House 7
-object house:..20 {
+object house: {
 	parent trip_meter7;
     name house7;
 	floor_area random.normal(1750,400);
 	//heating_setpoint heatingsetpoint5+random.normal(0,4);
-	//cooling_setpoint random.normal (80,2);
+	cooling_setpoint random.normal (80,2);
     air_temperature 72;
     object controller {
-        name cool_control;			
+        name cool_control7;			
         market Market_1;
         bid_mode ON;			
         period 900;
@@ -1442,7 +1454,7 @@ object house:..20 {
         control_mode RAMP;
         target air_temperature;
         // this normally changes according to schedule, can be used to control demand
-        setpoint 72;
+        setpoint cooling_setpoint;
         demand cooling_demand;
         total total_load;
         load hvac_load;
@@ -1462,15 +1474,15 @@ object waterheater {
 }
 
 // House 8
-object house:..20 {
+object house: {
 	parent trip_meter8;
     name house8;
 	floor_area random.normal(1750,400);
 	//heating_setpoint heatingsetpoint2+random.normal(0,4);
-	//cooling_setpoint random.normal (80,2);
+	cooling_setpoint random.normal (80,2);
     air_temperature 72;
     object controller {
-        name cool_control;			
+        name cool_control8;			
         market Market_1;
         bid_mode ON;			
         period 900;
@@ -1479,7 +1491,7 @@ object house:..20 {
         control_mode RAMP;
         target air_temperature;
         // this normally changes according to schedule, can be used to control demand
-        setpoint 72;
+        setpoint cooling_setpoint;
         demand cooling_demand;
         total total_load;
         load hvac_load;
@@ -1499,15 +1511,15 @@ object waterheater {
 }
 
 // House 9
-object house:..20 {
+object house: {
 	parent trip_meter9;
     name house9;
 	floor_area random.normal(1750,400);
 	//heating_setpoint heatingsetpoint5+random.normal(0,4);
-	//cooling_setpoint random.normal (80,2);
+	cooling_setpoint random.normal (80,2);
     air_temperature 72;
     object controller {
-        name cool_control;			
+        name cool_control9;			
         market Market_1;
         bid_mode ON;			
         period 900;
@@ -1516,7 +1528,7 @@ object house:..20 {
         control_mode RAMP;
         target air_temperature;
         // this normally changes according to schedule, can be used to control demand
-        setpoint 72;
+        setpoint cooling_setpoint;
         demand cooling_demand;
         total total_load;
         load hvac_load;
@@ -1536,15 +1548,15 @@ object waterheater {
 }
 
 // House 10
-object house:..20 {
+object house: {
 	parent trip_meter10;
     name house10;
 	floor_area random.normal(1750,400);
 	//heating_setpoint heatingsetpoint4+random.normal(0,4);
-	//cooling_setpoint random.normal (80,2);
+	cooling_setpoint random.normal (80,2);
     air_temperature 72;
     object controller {
-        name cool_control;			
+        name cool_control10;			
         market Market_1;
         bid_mode ON;			
         period 900;
@@ -1553,7 +1565,7 @@ object house:..20 {
         control_mode RAMP;
         target air_temperature;
         // this normally changes according to schedule, can be used to control demand
-        setpoint 72;
+        setpoint cooling_setpoint;
         demand cooling_demand;
         total total_load;
         load hvac_load;
@@ -1573,15 +1585,15 @@ object waterheater {
 }
 
 // House 11
-object house:..20 {
+object house: {
 	parent trip_meter11;
     name house11;
 	floor_area random.normal(1750,400);
 	//heating_setpoint heatingsetpoint2+random.normal(0,4);
-	//cooling_setpoint random.normal (80,2);
+	cooling_setpoint random.normal (80,2);
     air_temperature 72;
     object controller {
-        name cool_control;			
+        name cool_control11;			
         market Market_1;
         bid_mode ON;			
         period 900;
@@ -1590,7 +1602,7 @@ object house:..20 {
         control_mode RAMP;
         target air_temperature;
         // this normally changes according to schedule, can be used to control demand
-        setpoint 72;
+        setpoint cooling_setpoint;
         demand cooling_demand;
         total total_load;
         load hvac_load;
@@ -1610,15 +1622,15 @@ object waterheater {
 }
 
 // House 12
-object house:..20 {
+object house: {
 	parent trip_meter12;
     name house12;
 	floor_area random.normal(1750,400);
 	//heating_setpoint heatingsetpoint1+random.normal(0,4);
-	//cooling_setpoint random.normal (80,2);
+	cooling_setpoint random.normal (80,2);
     air_temperature 72;
     object controller {
-        name cool_control;			
+        name cool_control12;			
         market Market_1;
         bid_mode ON;			
         period 900;
@@ -1627,7 +1639,7 @@ object house:..20 {
         control_mode RAMP;
         target air_temperature;
         // this normally changes according to schedule, can be used to control demand
-        setpoint 72;
+        setpoint cooling_setpoint;
         demand cooling_demand;
         total total_load;
         load hvac_load;
@@ -1647,15 +1659,15 @@ object waterheater {
 }
 
 // House 13
-object house:..20 {
+object house: {
 	parent trip_meter13;
     name house13;
 	floor_area random.normal(1750,400);
 	//heating_setpoint heatingsetpoint3+random.normal(0,4);
-	//cooling_setpoint random.normal (80,2);
+	cooling_setpoint random.normal (80,2);
     air_temperature 72;
     object controller {
-        name cool_control;			
+        name cool_control13;			
         market Market_1;
         bid_mode ON;			
         period 900;
@@ -1664,7 +1676,7 @@ object house:..20 {
         control_mode RAMP;
         target air_temperature;
         // this normally changes according to schedule, can be used to control demand
-        setpoint 72;
+        setpoint cooling_setpoint;
         demand cooling_demand;
         total total_load;
         load hvac_load;
@@ -1684,15 +1696,15 @@ object waterheater {
 }
 
 // House 14
-object house:..20 {
+object house: {
 	parent trip_meter14;
     name house14;
 	floor_area random.normal(1750,400);
 	//heating_setpoint heatingsetpoint4+random.normal(0,4);
-	//cooling_setpoint random.normal (80,2);
+	cooling_setpoint random.normal (80,2);
     air_temperature 72;
     object controller {
-        name cool_control;			
+        name cool_control14;			
         market Market_1;
         bid_mode ON;			
         period 900;
@@ -1701,7 +1713,7 @@ object house:..20 {
         control_mode RAMP;
         target air_temperature;
         // this normally changes according to schedule, can be used to control demand
-        setpoint 72;
+        setpoint cooling_setpoint;
         demand cooling_demand;
         total total_load;
         load hvac_load;
@@ -1741,10 +1753,10 @@ object house {
     // can't use heatingsetpoint (schedule) otherwise the schedule overwrites
     // any value I send to it
 	//heating_setpoint 60;  //heatingsetpoint2+random.normal(0,4);
-	//cooling_setpoint random.normal (80,2);
+	cooling_setpoint random.normal (80,2);
     air_temperature 72;
     object controller {
-        name cool_control;			
+        name cool_control15;			
         market Market_1;
         bid_mode ON;			
         period 900;
@@ -1753,7 +1765,7 @@ object house {
         control_mode RAMP;
         target air_temperature;
         // this normally changes according to schedule, can be used to control demand
-        setpoint 72;
+        setpoint cooling_setpoint;
         demand cooling_demand;
         total total_load;
         load hvac_load;
