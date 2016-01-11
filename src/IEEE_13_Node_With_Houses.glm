@@ -1178,6 +1178,29 @@ object regulator:650630 {
 	configuration regulator_configuration:6506321;
 }
 
+// Added auction here before the definitions of all the houses which
+// use the auction
+
+class auction {
+    double current_price_mean_30min;
+    double current_price_stdev_30min;
+}
+
+// TODO: Figure out what the unit is
+// TODO: Figure out what special_mode is
+
+object auction {
+    name Market_1;
+    unit MW;
+    period 900;
+    verbose TRUE;
+    special_mode BUYERS_ONLY;
+    fixed_price 100;
+    warmup 0;
+    init_price 100;
+    init_stdev 0;
+}
+
 // House 1
 object house:..20 {
 	parent trip_meter1;
