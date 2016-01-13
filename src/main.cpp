@@ -74,10 +74,10 @@ int main(int argc, char** argv) {
 
   // set up the sockets for interfacing
   Connection* interface;
-  if ( options.server_ip.find(".") != std::string::npos )
-    interface = new IPV4_Connection();
-  else
+  if ( options.server_ip.find(":") != std::string::npos )
     interface = new IPV6_Connection();
+  else
+    interface = new IPV4_Connection();
   interface->serverIP = options.server_ip;
   interface->serverPort = options.server_port;
   if ( interface->Initialize(true) != 0 ) {
@@ -112,22 +112,22 @@ int main(int argc, char** argv) {
 	    {
 	      setValue = false;
 	    }
-	}
 
-      std::string gld_url = gld_url_base + obj + "/" + name;
-      if (setValue)
-	gld_url += "=" + value;
+	  std::string gld_url = gld_url_base + obj + "/" + name;
+	  if (setValue)
+	    gld_url += "=" + value;
 
-      intf_retval = gld_interface(gld_url, object);
-      if (intf_retval) // everything went well
-	{
-	  if (object.has_data)
+	  intf_retval = gld_interface(gld_url, object);
+	  if (intf_retval) // everything went well
 	    {
-	      std::cout << "Received:" <<
-		"\n\ttype = " << object.type << 
-		"\n\tobject = " << object.object << 
-		"\n\tname = " << object.name << 
-		"\n\tvalue = " << object.value << std::endl;
+	      if (object.has_data)
+		{
+		  std::cout << "Received:" <<
+		    "\n\ttype = " << object.type << 
+		    "\n\tobject = " << object.object << 
+		    "\n\tname = " << object.name << 
+		    "\n\tvalue = " << object.value << std::endl;
+		}
 	    }
 	}
     }
