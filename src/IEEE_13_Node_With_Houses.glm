@@ -4,12 +4,13 @@
 #set threadcount=1;
 #set randomseed=1;
 #set relax_naming_rules=1;
+#set pauseat='2000-01-01 0:00:01'
 #define stylesheet=http://gridlab-d.svn.sourceforge.net/viewvc/gridlab-d/trunk/core/gridlabd-2_0
 
 clock {
 	timestamp '2000-01-01 0:00:00';
 	stoptime '2000-01-01 1:00:00';
-	timezone EST+8EDT;
+	timezone UTC0;//CST6;//EST+8EDT;
 }
 
 // TODO: Make sure this is all we need

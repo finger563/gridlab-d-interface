@@ -40,7 +40,8 @@ shift $((OPTIND-1))
 
 # start GLD child process in real-time server mode
 #gridlabd -D run_realtime=1 Market_Controller_House_example.glm --server &
-gridlabd -D run_realtime=1 $model --server &
+#gridlabd -D run_realtime=1 $model --server &
+gridlabd $model --server &
 
 PID=$!
 
@@ -48,13 +49,13 @@ PID=$!
 sleep ${short_sleep}
 
 # Show control interface testing
-./gridlabd_interface ${GLD}/control/pauseat=2015-12-10 12:32:59 CST
+./gridlabd_interface ${GLD}/control/pauseat=2000-01-01 0:30:00
 sleep ${long_sleep}
-./gridlabd_interface ${GLD}/control/resume
+#./gridlabd_interface ${GLD}/control/resume
+#sleep ${long_sleep}
+./gridlabd_interface ${GLD}/control/pauseat=2000-01-01 0:40:00
 sleep ${long_sleep}
-./gridlabd_interface ${GLD}/control/pauseat=2015-12-10 15:16:17 CST
-sleep ${long_sleep}
-./gridlabd_interface ${GLD}/control/resume
+#./gridlabd_interface ${GLD}/control/resume
 
 # Show global variable GET
 ./gridlabd_interface ${GLD}/execdir
