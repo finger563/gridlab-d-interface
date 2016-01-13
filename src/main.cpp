@@ -104,11 +104,11 @@ int main(int argc, char** argv) {
 	  name = splits[2];
 	  value = splits[3];
 
-	  if ( strncmp(messageData,"SET:",4) == 0 ) 
+	  if (!strncmp(messageData,"SET:",4)) 
 	    {
 	      setValue = true;
 	    }
-	  else if ( strncmp(messageData,"GET:",4) == 0 )
+	  else if (!strncmp(messageData,"GET:",4))
 	    {
 	      setValue = false;
 	    }
