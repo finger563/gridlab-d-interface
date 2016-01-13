@@ -1,19 +1,4 @@
-#include <cpr.h>
-
-#include <stdio.h>
-#include <iostream>
-
-#include "rapidxml.hpp"
-#include "rapidxml_utils.hpp"
-
-struct gld_obj
-{
-  bool has_data;
-  std::string type;
-  std::string object;
-  std::string name;
-  std::string value;
-};
+#include "main.hpp"
 
 bool gld_interface(std::string gld_url,
 		   gld_obj& ret_obj)   // in-out param
@@ -72,23 +57,67 @@ bool gld_interface(std::string gld_url,
 int main(int argc, char** argv) {
 
   // parse cmd args
-  std::string gld_url = "http://localhost:6267";
-  if (argc > 1)
-    {
-      gld_url = "";
-      for (int i=1; i<argc; i++)
-	gld_url += argv[i] + std::string(" ");
-    }
-
-  // set up the sockets for interfacing
+  Options options;
+  if (options.Parse(argc, argv) == -1)
+    return -1;
+  options.Print();
 
   // set up local vars
   int intf_retval = 0;
+  int messageSize = 1024;
+  char messageData[messageSize + 1];
+  char tmpBuf[1024];
+  std::string gld_url_base = "http://" + 
+    options.gld_ip + ":" + 
+    options.gld_port + "/";
   gld_obj object;
 
+  // set up the sockets for interfacing
+  Connection* interface;
+  if ( options.server_ip.find(".") != std::string::npos )
+    interface = new IPV4_Connection();
+  else
+    interface = new IPV6_Connection();
+  interface->serverIP = options.server_ip;
+  interface->serverPort = options.server_port;
+  if ( interface->Initialize(true) != 0 ) {
+    std::cout << "ERROR: Couldn't initialize interface!\n";
+    return -1;
+  }
+
   // while loop for event handling
-  //while (true)
+  while (true)
     {
+      memset(messageData, 0, messageSize + 1);
+
+      bool setValue = false;
+      std::string type, obj, name, value;
+
+      if ( interface->Receive(messageData, messageSize) > 0 )
+	{
+	  // parse the message here
+	  // message = {SET:,GET:}<type>,<object>,<name>,<value>
+	  splitstring message = splitstring(messageData + 4);
+	  std::vector<std::string> splits = message.split(',');
+	  type = splits[0];
+	  obj = splits[1];
+	  name = splits[2];
+	  value = splits[3];
+
+	  if ( strncmp(messageData,"SET:",4) == 0 ) 
+	    {
+	      setValue = true;
+	    }
+	  else if ( strncmp(messageData,"GET:",4) == 0 )
+	    {
+	      setValue = false;
+	    }
+	}
+
+      std::string gld_url = gld_url_base + obj + "/" + name;
+      if (setValue)
+	gld_url += "=" + value;
+
       intf_retval = gld_interface(gld_url, object);
       if (intf_retval) // everything went well
 	{
