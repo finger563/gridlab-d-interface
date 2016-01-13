@@ -20,6 +20,14 @@ add_subdirectory(cpr)
 
 include_directories(${CPR_INCLUDE_DIRS})
 
+# add interface executable
 add_executable (${execName} main.cpp)
-
 target_link_libraries(${execName} ${CPR_LIBRARIES})
+
+# add market scheduler executable
+add_executable (market market.cpp)
+#target_link_libraries(market ${CPR_LIBRARIES})
+
+# add demand scheduler executable
+add_executable (demand demand.cpp)
+#target_link_libraries(demand ${CPR_LIBRARIES})
