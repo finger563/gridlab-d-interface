@@ -6,12 +6,24 @@
 #include "rapidxml.hpp"
 #include "rapidxml_utils.hpp"
 
+struct gld_obj
+{
+  bool has_data;
+  std::string type;
+  std::string object;
+  std::string name;
+  std::string value;
+};
 
 bool gld_interface(std::string gld_url,
-		   std::string& object,  // in-out param
-		   std::string& name,    // in-out param
-		   std::string& value)   // in-out param
+		   gld_obj& ret_obj)   // in-out param
 {
+  ret_obj.has_data = false;
+  ret_obj.type = "";
+  ret_obj.object = "";
+  ret_obj.name = "";
+  ret_obj.value = "";
+
   std::cout << "Connecting to: " << gld_url << std::endl;
   auto r = cpr::Get(cpr::Url{gld_url});
   if (r.status_code >= 400) {
@@ -30,39 +42,28 @@ bool gld_interface(std::string gld_url,
       rapidxml::xml_node<> *_type = doc.first_node("property");
       rapidxml::xml_node<> *_name, *_val, *_object;
 
-      object = "";
-      name = "";
-      value = "";
-
       if (_type)
 	{
 	  _object = _type->first_node("object");
 	  _name = _type->first_node("name");
 	  _val = _type->first_node("value");
-	  object = _object->value();
-	  name = _name->value();
-	  value = _val->value();
-	  /*
-	  std::cout << "Received:" <<
-	    "\n\ttype = property" <<
-	    "\n\tobject = " << _object->value() << 
-	    "\n\tname = " << _name->value() << 
-	    "\n\tvalue = " << _val->value() << std::endl;
-	  */
+
+	  ret_obj.has_data = true;
+	  ret_obj.type = "property";
+	  ret_obj.object = _object->value();
+	  ret_obj.name = _name->value();
+	  ret_obj.value = _val->value();
 	}
       else
 	{
 	  _type = doc.first_node("globalvar");
 	  _name = _type->first_node("name");
 	  _val = _type->first_node("value");
-	  name = _name->value();
-	  value = _val->value();
-	  /*
-	  std::cout << "Received:" <<
-	    "\n\ttype = globalvar" <<
-	    "\n\tname = " << _name->value() << 
-	    "\n\tvalue = " << _val->value() << std::endl;
-	  */
+
+	  ret_obj.has_data = true;
+	  ret_obj.type = "globalvar";
+	  ret_obj.name = _name->value();
+	  ret_obj.value = _val->value();
 	}
     }
   return true;
@@ -83,18 +84,22 @@ int main(int argc, char** argv) {
 
   // set up local vars
   int intf_retval = 0;
-  std::string object, name, value;
+  gld_obj object;
 
   // while loop for event handling
-  while (true)
+  //while (true)
     {
-      intf_retval = gld_interface(gld_url, object, name, value);
+      intf_retval = gld_interface(gld_url, object);
       if (intf_retval) // everything went well
 	{
-	  std::cout << "Received:" <<
-	    "\n\tobject = " << object << 
-	    "\n\tname = " << name << 
-	    "\n\tvalue = " << value << std::endl;
+	  if (object.has_data)
+	    {
+	      std::cout << "Received:" <<
+		"\n\ttype = " << object.type << 
+		"\n\tobject = " << object.object << 
+		"\n\tname = " << object.name << 
+		"\n\tvalue = " << object.value << std::endl;
+	    }
 	}
     }
 
