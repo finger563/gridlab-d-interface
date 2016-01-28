@@ -57,6 +57,23 @@ bool gld_interface(std::string gld_url,
 
 int main(int argc, char** argv) {
 
+  pid_t pID = fork();
+  if (pID == 0)
+    {
+      char *args[4];
+
+      char* process = "/usr/local/bin/gridlabd";
+      char* model = "./IEEE_13_Node_With_Houses.glm";
+      char* option = "--server";
+      args[0] = process;
+      args[1] = model;
+      args[2] = option;
+      args[3] = 0;
+
+      execv(args[0], args);
+    }
+
+
   // parse cmd args
   Options options;
   if (options.Parse(argc, argv) == -1)
@@ -86,6 +103,8 @@ int main(int argc, char** argv) {
     return -1;
   }
 
+  int num_timeouts = 0;
+
   // while loop for event handling
   while (true)
     {
@@ -96,6 +115,7 @@ int main(int argc, char** argv) {
 
       if ( interface->Receive(messageData, messageSize) > 0 )
 	{
+	  num_timeouts = 0;
 	  // parse the message here
 	  // message = {SET:,GET:}<type>,<object>,<name>,<value>
 	  splitstring message = splitstring(messageData + 4);
@@ -131,6 +151,14 @@ int main(int argc, char** argv) {
 		}
 	    }
 	}
+      else
+	{
+	  num_timeouts++;
+	  if (num_timeouts > 3)
+	    {
+	      break;
+	    }
+	}
     }
-
+  kill(0, SIGTERM);
 }

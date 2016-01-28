@@ -4,13 +4,18 @@
 #include "ConnectionSubsys.hpp"
 #include "splitstring.hpp"
 
+// Needed for Fork/exec/kill
+#include <sys/types.h>
+#include <unistd.h>
+#include <signal.h>
+
+// Needed for communicating with GLD
 #include <boost/network/protocol/http/client.hpp>
+#include "rapidxml.hpp"
+#include "rapidxml_utils.hpp"
 
 #include <stdio.h>
 #include <iostream>
-
-#include "rapidxml.hpp"
-#include "rapidxml_utils.hpp"
 
 struct gld_obj
 {
