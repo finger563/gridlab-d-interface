@@ -10,19 +10,21 @@ bool gld_interface(std::string gld_url,
   ret_obj.value = "";
 
   std::cout << "Connecting to: " << gld_url << std::endl;
-  auto r = cpr::Get(cpr::Url{gld_url});
-  if (r.status_code >= 400) {
-    std::cerr << "Error [" << r.status_code << "] making request" << std::endl;
-    return false;
-  } else {
-    std::cout << "Request took " << r.elapsed << std::endl;
-  }
+
+  using namespace boost::network;
+  http::client client;
+  http::client::request request(gld_url);
+  request << header("Connection", "close");
+  http::client::response response = client.get(request);
+  std::cout << body(response) << std::endl;
+
+  std::string text = body(response);
   
-  if (r.text.length())
+  if (text.length())
     {
       // parse xml here from r.text
       rapidxml::xml_document<> doc;
-      doc.parse<0>((char *)r.text.c_str());
+      doc.parse<0>((char *)text.c_str());
 
       rapidxml::xml_node<> *_type = doc.first_node("property");
       rapidxml::xml_node<> *_name, *_val, *_object;

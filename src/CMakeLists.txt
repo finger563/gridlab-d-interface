@@ -4,6 +4,9 @@ SET(execName gridlabd_interface)
 
 project(${execName})
 
+set ( CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH};./cpp-netlib-build )
+find_package ( cppnetlib 0.11.0 REQUIRED )
+
 ## Check C++11 / C++0x
 include(CheckCXXCompilerFlag)
 CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
@@ -16,18 +19,14 @@ else()
     message(FATAL_ERROR "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
 endif()
 
-add_subdirectory(cpr)
-
-include_directories(${CPR_INCLUDE_DIRS})
+include_directories(${CPPNETLIB_INCLUDE_DIRS})
 
 # add interface executable
 add_executable (${execName} main.cpp)
-target_link_libraries(${execName} ${CPR_LIBRARIES})
+target_link_libraries(${execName} ${CPPNETLIB_LIBRARIES})
 
 # add market scheduler executable
 add_executable (market market.cpp)
-#target_link_libraries(market ${CPR_LIBRARIES})
 
 # add demand scheduler executable
 add_executable (demand demand.cpp)
-#target_link_libraries(demand ${CPR_LIBRARIES})

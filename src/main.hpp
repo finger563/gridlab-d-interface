@@ -4,7 +4,7 @@
 #include "ConnectionSubsys.hpp"
 #include "splitstring.hpp"
 
-#include <cpr.h>
+#include <boost/network/protocol/http/client.hpp>
 
 #include <stdio.h>
 #include <iostream>
