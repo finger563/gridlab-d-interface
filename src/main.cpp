@@ -16,7 +16,6 @@ bool gld_interface(std::string gld_url,
   http::client::request request(gld_url);
   request << header("Connection", "close");
   http::client::response response = client.get(request);
-  std::cout << body(response) << std::endl;
 
   std::string text = body(response);
   
