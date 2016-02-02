@@ -10,7 +10,6 @@ bool gld_interface(std::string gld_url,
   ret_obj.value = "";
 
   std::cout << "Connecting to: " << gld_url << std::endl;
-
   using namespace boost::network;
   http::client client;
   http::client::request request(gld_url);
@@ -21,7 +20,6 @@ bool gld_interface(std::string gld_url,
   
   if (text.length())
     {
-      // parse xml here from r.text
       rapidxml::xml_document<> doc;
       doc.parse<0>((char *)text.c_str());
 
