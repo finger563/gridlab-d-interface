@@ -60,9 +60,9 @@ int main(int argc, char** argv) {
     {
       char *args[4];
 
-      char* process = "/usr/local/bin/gridlabd";
-      char* model = "./IEEE_13_Node_With_Houses.glm";
-      char* option = "--server";
+      char process[] = "/usr/local/bin/gridlabd";
+      char model[] = "./IEEE_13_Node_With_Houses.glm";
+      char option[] = "--server";
       args[0] = process;
       args[1] = model;
       args[2] = option;
