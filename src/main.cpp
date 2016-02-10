@@ -58,15 +58,20 @@ int main(int argc, char** argv) {
   pid_t pID = fork();
   if (pID == 0)
     {
-      char *args[4];
+      char *args[6];
 
-      char process[] = "/usr/local/bin/gridlabd";
+      char process[] = "/usr/bin/gridlabd";
       char model[] = "./IEEE_13_Node_With_Houses.glm";
       char option[] = "--server";
+      char option2[] = "-D";
+      char option3[] = "run_realtime=1";
       args[0] = process;
       args[1] = model;
       args[2] = option;
       args[3] = 0;
+      args[3] = option2;
+      args[4] = option3;
+      args[5] = 0;
 
       execv(args[0], args);
     }
@@ -96,12 +101,14 @@ int main(int argc, char** argv) {
     interface = new IPV4_Connection();
   interface->serverIP = options.server_ip;
   interface->serverPort = options.server_port;
+  interface->receiveTimeout = 1;
   if ( interface->Initialize(true) != 0 ) {
     std::cout << "ERROR: Couldn't initialize interface!\n";
     return -1;
   }
 
   int num_timeouts = 0;
+  int currentTime = 1;
 
   // while loop for event handling
   while (true)
@@ -151,11 +158,20 @@ int main(int argc, char** argv) {
 	}
       else
 	{
-	  num_timeouts++;
-	  if (num_timeouts > 3)
-	    {
-	      break;
-	    }
+	  std::string gld_url, date, time;
+
+	  currentTime++;
+
+	  // STEP GLD
+	  date = "2000-01-01 ";
+	  sprintf( tmpBuf,
+		   "%02d:%02d:%02d",
+		   (int)( ( currentTime / 60 ) / 60 ),
+		   (int)( currentTime / 60 ),
+		   (int)fmod(currentTime, 60));
+	  time = std::string(tmpBuf);
+	  gld_url = gld_url_base + "control/pauseat=" + date + time;
+	  intf_retval = gld_interface(gld_url, object);
 	}
     }
   kill(0, SIGTERM);

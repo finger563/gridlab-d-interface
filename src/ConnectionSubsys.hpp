@@ -108,7 +108,6 @@ public:
     : Connection()
   {
     serverPort = 7777;
-    receiveTimeout = 5;
     serverIP = "10.1.1.1";
   }
 
@@ -281,7 +280,6 @@ public:
     : Connection()
   {
     serverPort = 7777;
-    receiveTimeout = 5;
     serverIP = "2001:470:489e::3";
   }
 
